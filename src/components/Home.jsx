@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import Logo from "../assets/LogoSinFondo.png"
 // Fecha inicial y asignaciones de placas
 const fechaInicial = new Date('2024-12-04'); // Fecha donde comienzan a asignarse 7 y 8
 const asignaciones = {
@@ -75,9 +75,10 @@ export const Home = () => {
   ));
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Control de Subsidio de Gasolina</h1>
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-80">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300">
+      <img src={Logo} alt="Logo de OterGas - Control de Subsidio de Gasolina" />
+      <h2 className="text-3xl font-bold mb-6 text-center md:text-xl">Control de Subsidio de Gasolina</h2>
+      <form onSubmit={handleSubmit} className="bg-white flex flex-col justify-center items-center  p-6 rounded-lg shadow-md w-80">
         <label className="block mb-4">
           <span className="text-gray-700">Introduce el último número de la placa:</span>
           <input
@@ -87,7 +88,7 @@ export const Home = () => {
             min="0"
             max="9"
             required
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 bg-gray-300 block w-full border border-gray-300 rounded-md p-2"
           />
         </label>
         <button
@@ -111,6 +112,11 @@ export const Home = () => {
           </ul>
         </div>
       )}
+      <footer className="absolute bottom-0 w-full mb-8">
+        <p className="text-center text-gray-500 mt-4">Desarrollado por <a href="https://www.linkedin.com/in/r%C3%BAbel-maneiro-775931204/" className="text-blue-500 hover:underline">Rúbel Maneiro</a></p>
+        <p className="mt-2 text-gray-500 text-center">© {new Date().getFullYear()} OterGas. Todos los derechos reservados.</p>
+      </footer>
+
     </div>
   );
 };
