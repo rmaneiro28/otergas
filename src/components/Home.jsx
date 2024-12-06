@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import Logo from "../assets/LogoSinFondo.png"
+import Logo from "../assets/LogoSinFondo.png";
+
 // Fecha inicial y asignaciones de placas
 const fechaInicial = new Date('2024-12-04'); // Fecha donde comienzan a asignarse 7 y 8
 const asignaciones = {
@@ -7,13 +8,14 @@ const asignaciones = {
   1: ['3', '4'],
   2: ['5', '6'],
   3: ['7', '8'],
-  4: ["9", "0"],
-  5: ["1", "2"],
-  6: ["3", "4"],
-  7: ["5", "6"],
-  8: ["7", "8"],
-  9: ["9", "0"],
+  4: ['9', '0'],
+  5: ['1', '2'],
+  6: ['3', '4'],
+  7: ['5', '6'],
+  8: ['7', '8'],
+  9: ['9', '0'],
 };
+
 const obtenerNombreDelDia = (fecha) => {
   const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   return fecha.toLocaleDateString('es-VE', opciones);
@@ -58,65 +60,53 @@ export const Home = () => {
   const [numeroPlaca, setNumeroPlaca] = useState('');
   const [dias, setDias] = useState([]);
 
-  const handleInputChange = (event) => {
-    setNumeroPlaca(event.target.value);
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const diasProximos = obtenerProximosDias(numeroPlaca);
     setDias(diasProximos);
   };
-  console.log(new Date().toLocaleDateString('es-VE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }))
-  console.log(dias.map(
-    (d) => {
-      console.log(new Date(d.dia).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
-    }
-  ));
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300">
-      <img src={Logo} alt="Logo de OterGas - Control de Subsidio de Gasolina" />
-      <h2 className="text-3xl font-bold mb-6 text-center md:text-xl">Control de Subsidio de Gasolina</h2>
-      <form onSubmit={handleSubmit} className="bg-white flex flex-col justify-center items-center  p-6 rounded-lg shadow-md w-80">
-        <label className="block mb-4">
-          <span className="text-gray-700">Introduce el último número de la placa:</span>
-          <input
-            type="number"
-            value={numeroPlaca}
-            onChange={handleInputChange}
-            min="0"
-            max="9"
-            required
-            className="mt-1 bg-gray-300 block w-full border border-gray-300 rounded-md p-2"
-          />
-        </label>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-400 transition duration-200"
-        >
-          Consultar Días
-        </button>
-      </form>
+    <div className="flex flex-col items-center justify-center calc(min-h-screen - 2rem) bg-gray-100 font-sans">
+      <header className="flex flex-col justify-center items-center mb-4">
+        <img src={Logo} alt="Logo de OterGas" className="w-32 h-auto mb-2" />
+        <h1 className="text-4xl max-md:text-xl font-bold text-center ">Control de Subsidio de Gasolina</h1>
+      </header>
 
-      {dias.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold">Próximos Días para Surtir Gasolina:</h2>
-          <ul className="mt-2 bg-white p-4 rounded-lg shadow-md">
-            {dias.map((turno, index) => (
-
-              <li key={index} className="flex justify-between py-2 border-b last:border-b-0">
-                <span>{turno.dia === new Date().toLocaleDateString('es-VE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? `Hoy ${turno.dia}` : turno.dia}:</span>
-              </li>
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+        <form onSubmit={handleSubmit}>
+          <label className="block mb-4 text-gray-700">Selecciona el último número de la placa:</label>
+          <div className="grid grid-cols-5 gap-2 mb-4">
+            {[...Array(10)].map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setNumeroPlaca(index.toString())}
+                className={`flex justify-center items-center h-12 text-lg font-bold rounded-md transition-colors ${numeroPlaca === index.toString() ? 'bg-blue-500 text-white' : 'bg-blue-200 hover:bg-blue-300'}`}
+              >
+                {index}
+              </button>
             ))}
-          </ul>
-        </div>
-      )}
-      <footer className="absolute bottom-0 w-full mb-8">
-        <p className="text-center text-gray-500 mt-4">Desarrollado por <a href="https://www.linkedin.com/in/r%C3%BAbel-maneiro-775931204/" className="text-blue-500 hover:underline">Rúbel Maneiro</a></p>
-        <p className="mt-2 text-gray-500 text-center">© {new Date().getFullYear()} OterGas. Todos los derechos reservados.</p>
-      </footer>
+          </div>
+        </form>
 
+        {dias.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-xl font-semibold">Próximos Días para Surtir Gasolina:</h2>
+            <ul className="mt-2 bg-gray-50 p-4 rounded-lg shadow-md">
+              {dias.map((turno, index) => (
+                <li key={index} className="flex justify-between py-2 border-b border-gray-200 last:border-b-0">
+                  <span>{turno.dia === new Date().toLocaleDateString('es-VE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? `Hoy ${turno.dia}` : turno.dia}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <footer className="mt-8 text-center text-gray-500">
+          <p>Desarrollado por <a href="https://www.linkedin.com/in/r%C3%BAbel-maneiro-775931204/" className="text-blue-500 hover:underline">Rúbel Maneiro</a></p>
+          <p>© {new Date().getFullYear()} OterGas. Todos los derechos reservados.</p>
+        </footer>
+      </div>
     </div>
   );
 };
