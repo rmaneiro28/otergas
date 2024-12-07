@@ -2,7 +2,8 @@ import { useState } from 'react';
 import Logo from "../assets/LogoSinFondo.png";
 
 // Fecha inicial y asignaciones de placas
-const fechaInicial = new Date('2024-12-04'); // Fecha donde comienzan a asignarse 7 y 8
+const fechaInicial = new Date(new Date('2024-12-04').setHours(new Date('2024-12-04').getHours() + 3, new Date('2024-12-04').getMinutes() + 59));
+; // Fecha donde comienzan a asignarse 7 y 8
 const asignaciones = {
   0: ['1', '2'],
   1: ['3', '4'],
@@ -45,6 +46,8 @@ const obtenerProximosDias = (ultimoNumero) => {
     fecha.setDate(fechaInicial.getDate() + ((diaActual + i) * 1)); // Sumar días
 
     if (asignaciones[diaTurno].includes(ultimoNumero)) {
+      console.log("Fecha inicial: " + fechaActual);
+      console.log("Fecha turno: " + fecha);
       if (fecha < fechaActual) {
         continue; // Saltear los dias pasados
       } else {
@@ -55,6 +58,9 @@ const obtenerProximosDias = (ultimoNumero) => {
 
   return proximoTurno;
 };
+console.log(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }));
+
+
 
 export const Home = () => {
   const [numeroPlaca, setNumeroPlaca] = useState('');
@@ -65,7 +71,6 @@ export const Home = () => {
     const diasProximos = obtenerProximosDias(numeroPlaca);
     setDias(diasProximos);
   };
-
   return (
     <div className="flex flex-col items-center justify-center calc(min-h-screen - 2rem) bg-gray-100 font-sans">
       <header className="flex flex-col justify-center items-center mb-4">
@@ -95,7 +100,8 @@ export const Home = () => {
             <ul className="mt-2 bg-gray-50 p-4 rounded-lg shadow-md">
               {dias.map((turno, index) => (
                 <li key={index} className="flex justify-between py-2 border-b border-gray-200 last:border-b-0">
-                  <span>{turno.dia === new Date().toLocaleDateString('es-VE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) ? `Hoy ${turno.dia}` : turno.dia}</span>
+                  <span>{index + 1}</span>
+                  <span>{turno.dia === new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }) ? `Hoy ${turno.dia}` : turno.dia === new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) ? `Mañana ${turno.dia}` : turno.dia}</span>
                 </li>
               ))}
             </ul>
