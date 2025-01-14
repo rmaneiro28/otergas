@@ -71,6 +71,7 @@ export const Home = () => {
     const diasProximos = obtenerProximosDias(numeroPlaca);
     setDias(diasProximos);
   };
+  console.log(asignaciones[fechaInicial.getDay() % 5])
   return (
     <div className="flex flex-col items-center justify-center calc(min-h-screen - 2rem) bg-gray-100 font-sans">
       <header className="flex flex-col justify-center items-center mb-4">
@@ -80,13 +81,22 @@ export const Home = () => {
 
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSubmit}>
+          <p className="mb-4 text-gray-700">Placas que corresponden al día de hoy: {asignaciones[fechaInicial.getDay() % 5].join(' y ')}</p>
           <label className="block mb-4 text-gray-700">Selecciona el último número de la placa:</label>
           <div className="grid grid-cols-5 gap-2 mb-4">
             {[...Array(10)].map((_, index) => (
               <button
                 key={index}
                 onClick={() => setNumeroPlaca(index.toString())}
-                className={`flex justify-center items-center h-12 text-lg font-bold rounded-md transition-colors ${numeroPlaca === index.toString() ? 'bg-blue-500 text-white' : 'bg-blue-200 hover:bg-blue-300'}`}
+                className={`flex justify-center items-center h-12 text-lg font-bold rounded-md transition-colors ${numeroPlaca === index.toString() ||
+                  numeroPlaca === asignaciones[fechaInicial.getDay() % 5][0] &&
+                  numeroPlaca === asignaciones[fechaInicial.getDay() % 5][1]
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-blue-200 hover:bg-blue-300'
+                  } ${asignaciones[fechaInicial.getDay() % 5].includes(index.toString())
+                    ? 'border-2 border-blue-500'
+                    : ''
+                  }`}
               >
                 {index}
               </button>
