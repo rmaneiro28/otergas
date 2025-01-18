@@ -51,7 +51,7 @@ const obtenerProximosDias = (ultimoNumero) => {
       if (fecha < fechaActual) {
         continue; // Saltear los dias pasados
       } else {
-        proximoTurno.push({ dia: obtenerNombreDelDia(fecha) });
+        proximoTurno.push({ dia: obtenerNombreDelDia(fecha), fecha: fecha });
       }
     }
   }
@@ -65,13 +65,13 @@ console.log(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateS
 export const Home = () => {
   const [numeroPlaca, setNumeroPlaca] = useState('');
   const [dias, setDias] = useState([]);
+  const placasHoy = asignaciones[new Date().getDay() % 5];
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const diasProximos = obtenerProximosDias(numeroPlaca);
     setDias(diasProximos);
   };
-  console.log(asignaciones[fechaInicial.getDay() % 5])
   return (
     <div className="flex flex-col items-center justify-center calc(min-h-screen - 2rem) bg-gray-100 font-sans">
       <header className="flex flex-col justify-center items-center mb-4">
@@ -81,28 +81,32 @@ export const Home = () => {
 
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSubmit}>
-          <p className="mb-4 text-gray-700">Placas que corresponden al día de hoy: {asignaciones[fechaInicial.getDay() % 5].join(' y ')}</p>
           <label className="block mb-4 text-gray-700">Selecciona el último número de la placa:</label>
           <div className="grid grid-cols-5 gap-2 mb-4">
-            {[...Array(10)].map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setNumeroPlaca(index.toString())}
-                className={`flex justify-center items-center h-12 text-lg font-bold rounded-md transition-colors ${numeroPlaca === index.toString() ||
-                  numeroPlaca === asignaciones[fechaInicial.getDay() % 5][0] &&
-                  numeroPlaca === asignaciones[fechaInicial.getDay() % 5][1]
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-blue-200 hover:bg-blue-300'
-                  } ${asignaciones[fechaInicial.getDay() % 5].includes(index.toString())
-                    ? 'border-2 border-blue-500'
-                    : ''
-                  }`}
-              >
-                {index}
-              </button>
-            ))}
+            {[...Array(10)].map((_, index) => {
+              const esHoy = asignaciones[new Date().getDay() % 5].includes(index.toString());
+              return (
+                <button
+                  key={index}
+                  onClick={() => setNumeroPlaca(index.toString())}
+                  className={`flex justify-center items-center h-12 text-lg font-bold rounded-md transition-colors ${numeroPlaca === index.toString() ||
+                    numeroPlaca === asignaciones[fechaInicial.getDay() % 5][0] &&
+                    numeroPlaca === asignaciones[fechaInicial.getDay() % 5][1]
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-blue-200 hover:bg-blue-300'
+                    } ${esHoy ? 'bg-blue-400' : ''}`}
+                >
+                  {index}
+                </button>
+              );
+            })}
           </div>
         </form>
+
+        <div className="mt-4 text-center">
+          <p className="text-lg font-semibold">Placas que corresponden hoy:</p>
+          <p className="text-blue-500">{placasHoy.join(' y ')}</p>
+        </div>
 
         {dias.length > 0 && (
           <div className="mt-6">
