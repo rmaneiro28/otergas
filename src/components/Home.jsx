@@ -65,7 +65,6 @@ console.log(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateS
 export const Home = () => {
   const [numeroPlaca, setNumeroPlaca] = useState('');
   const [dias, setDias] = useState([]);
-  const placasHoy = asignaciones[new Date().getDay() % 5];
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -83,8 +82,7 @@ export const Home = () => {
         <form onSubmit={handleSubmit}>
           <label className="block mb-4 text-gray-700">Selecciona el último número de la placa:</label>
           <div className="grid grid-cols-5 gap-2 mb-4">
-            {[...Array(10)].map((_, index) => {
-              const esHoy = asignaciones[new Date().getDay() % 5].includes(index.toString());
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((_, index) => {
               return (
                 <button
                   key={index}
@@ -94,7 +92,7 @@ export const Home = () => {
                     numeroPlaca === asignaciones[fechaInicial.getDay() % 5][1]
                     ? 'bg-blue-500 text-white'
                     : 'bg-blue-200 hover:bg-blue-300'
-                    } ${esHoy ? 'bg-blue-400' : ''}`}
+                    }`}
                 >
                   {index}
                 </button>
@@ -103,10 +101,6 @@ export const Home = () => {
           </div>
         </form>
 
-        <div className="mt-4 text-center">
-          <p className="text-lg font-semibold">Placas que corresponden hoy:</p>
-          <p className="text-blue-500">{placasHoy.join(' y ')}</p>
-        </div>
 
         {dias.length > 0 && (
           <div className="mt-6">

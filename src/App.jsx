@@ -3,6 +3,7 @@ import './App.css'
 import { Home } from './components/Home'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from '@vercel/analytics/react'
+import Calendar from './components/Calendar'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <SpeedInsights />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/calendar" element={<Calendar />} />
         </Routes>
       </BrowserRouter>
     </>
