@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Logo from "../assets/LogoSinFondo.png";
 
 // Fecha inicial y ciclo de asignaciones (patrones de 5 días)
-const fechaInicial = new Date('2025-04-27'); // Fecha base para calcular el ciclo, sincronizada con el backend
+const fechaInicial = new Date('2025-04-27 00:00:00');
 const asignacionesCiclo = [
   ['1', '2'],
   ['3', '4'],
@@ -16,10 +16,7 @@ const obtenerPlacasParaFecha = (fecha) => {
   // Calcular días transcurridos desde la fecha inicial
   const unDia = 24 * 60 * 60 * 1000;
   const diasTranscurridos = Math.floor((fecha.getTime() - fechaInicial.getTime()) / unDia);
-  console.log("Días transcurridos desde la fecha inicial: ", diasTranscurridos);
-  // Calcular el índice dentro del ciclo (0-4)
   const indiceCiclo = ((diasTranscurridos % 5) + 5) % 5; // Aseguramos un índice positivo
-  console.log("Índice del ciclo: ", indiceCiclo);
   return asignacionesCiclo[indiceCiclo];
 };
 
@@ -58,7 +55,7 @@ const obtenerProximosDias = (ultimoNumero) => {
 
   // Calcular los próximos días para este número de placa
   const hoy = new Date();
-
+  console.log(hoy.toTimeString());
   // Buscar hasta 10 días en el futuro para encontrar los próximos 2 días aplicables
   for (let i = 0; proximoTurno.length < 2 && i < 10; i++) {
     const fechaFutura = new Date(hoy);
